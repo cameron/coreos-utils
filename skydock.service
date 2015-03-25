@@ -1,10 +1,12 @@
 [Unit]
 Description=skydock
 After=docker.service
+After=skydns.service
 Requires=docker.service
+Requires=skydns.service
 
 [Service]
-ExecStartPre=$(/usr/bin/docker rm skydock || :)
+ExecStartPre=-/usr/bin/docker rm skydock
 ExecStartPre=/usr/bin/docker pull crosbymichael/skydock
 ExecStart=/usr/bin/docker run -v /var/run/docker.sock:/docker.sock --name skydock crosbymichael/skydock -ttl 30 -environment dev -s /docker.sock -domain docker -name skydns
 ExecStop=/usr/bin/docker stop skydock

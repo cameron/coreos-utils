@@ -1,10 +1,29 @@
 #! /bin/bash
 
-scp -F ~/.ssh/config $1 $2:~/$1
+if [ "$#" -lt 1 ]; then
+    script=$0
+    echo "Usage: ${script:2} host file ..."
+    exit;
+fi
 
-dest=/etc/systemd/system/$1
-ssh -l core $2 "
-sudo mv $1 $dest
-sudo systemctl enable $dest
-sudo systemctl start $1 &
-"
+if [ "$#" -lt 2 ]; then
+    echo "No files given, exiting."
+    exit
+fi
+
+host=$1
+files="${@:2}"
+
+scp -F ~/.ssh/config $files $host:~/
+
+dest=/etc/systemd/system/
+cmd=""
+for file in $files; do
+    cmd="$cmd
+sudo mv $file $dest
+sudo systemctl enable $dest$file
+sudo systemctl start $file"
+done;
+
+echo "Starting services (this may take a minute)"
+ssh -l core $host "$cmd"
