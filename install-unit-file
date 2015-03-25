@@ -1,0 +1,10 @@
+#! /bin/bash
+
+scp -F ~/.ssh/config $1 $2:~/$1
+
+dest=/etc/systemd/system/$1
+ssh -l core $2 "
+sudo mv $1 $dest
+sudo systemctl enable $dest
+sudo systemctl start $1 &
+"

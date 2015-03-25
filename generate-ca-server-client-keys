@@ -1,0 +1,49 @@
+#! /bin/bash
+
+# copy/pasta from https://docs.docker.com/articles/https/
+
+set -e
+
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $0 <hostname> <ip>"
+  exit
+fi
+
+DNS_HOST=$1
+IP_HOST=$2
+
+CA_KEY=ca-key.pem
+CA=ca.pem
+S_KEY=server-key.pem
+S_REQ=server.csr
+CONF=extfile.cnf
+S_CERT=server-cert.pem
+KEY=key.pem
+C_REQ=client.csr
+CERT=cert.pem
+
+echo "Removing old files..."
+sudo rm -f $CA_KEY $CA $S_KEY $S_REQ $CONF $S_CERT $KEY $C_REQ $CERT
+
+openssl genrsa -aes256 -out $CA_KEY 2048
+openssl req -new -x509 -days 365 -key $CA_KEY -sha256 -out $CA
+openssl genrsa -out $S_KEY 2048
+openssl req -subj "/CN=$DNS_HOST" -new -key $S_KEY -out $S_REQ
+echo "subjectAltName = IP:$IP_HOST,IP:127.0.0.1" > $CONF
+openssl x509 -req -days 365 -in $S_REQ -CA $CA -CAkey $CA_KEY \
+  -CAcreateserial -out $S_CERT -extfile $CONF
+openssl genrsa -out $KEY 2048
+openssl req -subj '/CN=client' -new -key $KEY -out $C_REQ
+echo "extendedKeyUsage = clientAuth" > $CONF
+openssl x509 -req -days 365 -in $C_REQ -CA $CA -CAkey $CA_KEY \
+  -CAcreateserial -out $CERT -extfile $CONF
+rm -v $C_REQ $S_REQ
+chmod -v 0400 $CA_KEY $KEY $S_KEY
+chmod -v 0444 $CA $S_CERT $CERT
+
+rm $CONF 
+
+echo "E.g., run the daemon:
+  docker -d --tlsverify --tlscacert=$CA --tlscert=$S_CERT --tlskey=$S_KEY -H=0.0.0.0:2376"
+echo "E.g., run the client:
+   docker --tlsverify --tlscacert=$CA --tlscert=$CERT --tlskey=$KEY -H=$HOST:2376 version"

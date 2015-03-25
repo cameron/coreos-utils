@@ -1,0 +1,14 @@
+[Unit]
+Description=skydns
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStartPre=$(/usr/bin/docker rm skydns || :)
+ExecStartPre=/usr/bin/docker pull crosbymichael/skydns
+ExecStart=/usr/bin/docker run -p 172.17.42.1:53:53/udp --name skydns crosbymichael/skydns -nameserver 8.8.8.8:53 -domain docker.dev
+ExecStop=/usr/bin/docker stop skydns
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target
