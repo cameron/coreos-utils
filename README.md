@@ -6,3 +6,4 @@
 ### Wishlist
 - CLI for selecting from a list of DOCKER_HOSTs
 - if it gets any more serious, rename to tug 
+- automate installation of TLS cert/keys
