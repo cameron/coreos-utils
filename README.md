@@ -16,4 +16,4 @@
     - simple web crawling stack
       - finish datahog? !
 
-## Discover docker-machine and despair
+## Discover [docker-machine](https://github.com/docker/machine) and despair
