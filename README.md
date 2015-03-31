@@ -10,8 +10,10 @@
   - locally (in vm), or remotely (on DO via triton? later aws) 
 - rename to tug 
 - install TLS cert/keys (not just generation)
-- read docker-compose.yml, launch on existing/new hosts
+- join forces with docker-compose.yml, launch on existing/new hosts in 2 commands 
   - build seed stacks 
-    - goal: beefy, performant and ready-for-reddit application clusters (db, static assets, cache, middle layer) that can be cloned and launched in minutes
+    - goal: beefy, performant and ready-for-reddit application clusters (db, static assets, cache, middle layer) that can be cloned and launched in one command 
     - simple web crawling stack
       - finish datahog? !
+
+## Discover docker-machine and despair
