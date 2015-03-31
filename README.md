@@ -4,6 +4,14 @@
 - install unit files (e.g., containers that run at startup)
   
 ### Wishlist
-- CLI for selecting from a list of DOCKER_HOSTs
-- if it gets any more serious, rename to tug 
-- automate installation of TLS cert/keys
+- CLI 
+- switch DOCKER_HOST based on a list of DOCKER_HOSTs, like /.ssh/config
+- create dockerd host
+  - locally (in vm), or remotely (on DO via triton? later aws) 
+- rename to tug 
+- install TLS cert/keys (not just generation)
+- read docker-compose.yml, launch on existing/new hosts
+  - build seed stacks 
+    - goal: beefy, performant and ready-for-reddit application clusters (db, static assets, cache, middle layer) that can be cloned and launched in minutes
+    - simple web crawling stack
+      - finish datahog? !
