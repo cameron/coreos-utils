@@ -1,3 +1,6 @@
+# UPDATE 
+[docker-machine](https://github.com/docker/machine) does all this and more
+
 ## Scripts for bootstraping a CoreOS machine into a useful state
 - enable the daemon's remote API
 - generate a TLS certificate and client/server keys for secure remote communication
@@ -16,4 +19,3 @@
     - simple web crawling stack
       - finish datahog? !
 
-## Discover [docker-machine](https://github.com/docker/machine) and despair + rejoice
